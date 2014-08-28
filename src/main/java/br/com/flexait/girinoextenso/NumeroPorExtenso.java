@@ -40,6 +40,7 @@ public class NumeroPorExtenso {
 	/* este parÂmetro não deveria existir, já que segundo as gramáticas omite-se apenas depois de mil */
 	private TipoSeparador separadorUltimoGrupo = TipoSeparador.VIRGULA;
 	private TipoSeparador separadorDepoisDeMil = TipoSeparador.VIRGULA;
+	private boolean moeda;
 
 
 	/**
@@ -291,6 +292,11 @@ public class NumeroPorExtenso {
 	 */
 	public  <T extends Number> String converteMoeda(T number, String[] nomesMoeda, String[] nomesSubdivisao, int escalaSubdivisao) {
 		BigDecimal n = new BigDecimal(number.toString());
+		
+		if(moeda) {
+			n = n.setScale(2, BigDecimal.ROUND_HALF_UP);
+		}
+		
 		BigDecimal[] split = n.divideAndRemainder(BigDecimal.ONE);
 
 		// se não houver centavos, só retorna o principal
@@ -310,6 +316,15 @@ public class NumeroPorExtenso {
 	 * @return O valor escrito por extenso.
 	 */
 	public <T extends Number> String converteMoeda(T numero) {
-		return converteMoeda(numero, new String[] {"real", "reais"}, new String[] {"centavo", "centavos"}, 100);
-	}	
+		return arredondado().converteMoeda(numero, new String[] {"real", "reais"}, new String[] {"centavo", "centavos"}, 100);
+	}
+	
+	/**
+	 * Este método configura a api para arredondar em duas casas decimais
+	 * @return A instância da classe
+	 */
+	public NumeroPorExtenso arredondado() {
+		moeda = true;
+		return this;
+	}
 }

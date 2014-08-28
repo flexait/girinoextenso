@@ -94,5 +94,18 @@ public class NumeroPorExtensoTests {
 		big = big.add(new BigDecimal(17));
 		assertEquals("trezentos e quarenta e cinco septendecilhões, duzentos e trinta e três sedecilhões, novecentos e cinquenta quindecilhões, oitocentos e sessenta e um quatordecilhões, setecentos e setenta e dois tredecilhões, seiscentos e oitenta e três dodecilhões, quinhentos e noventa e quatro undecilhões, quatrocentos e cinco decilhões, trezentos e seis octilhões, duzentos e dezessete setilhões, cento e vinte e oito sextilhões, trinta e nove quintilhões, novecentos e quarenta quatrilhões, oitocentos e cinquenta e um trilhões, setecentos e sessenta e dois bilhões, seiscentos e setenta e três milhões, vinte e três mil e dezessete reais", n.converteMoeda(big));
 	}
+	
+	@Test
+	public void deveArredondarParaCimaSeAcimaDaMetade() {
+		NumeroPorExtenso n = NumeroPorExtenso.getDefaultInstance();
+		assertEquals("um mil reais e cinquenta e nove centavos", n.converteMoeda(1000.585));
+		assertEquals("um mil reais e cinquenta e nove centavos", n.converteMoeda(1000.586));
+	}
+	
+	@Test
+	public void deveArredondarParaBaixoSeAbaixoDaMetade() {
+		NumeroPorExtenso n = NumeroPorExtenso.getDefaultInstance();
+		assertEquals("um mil reais e cinquenta e oito centavos", n.converteMoeda(1000.584));
+	}
 
 }
